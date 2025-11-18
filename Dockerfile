@@ -10,7 +10,7 @@ RUN mvn clean install -DskipTests=true
 
 #Stage 2 : Run the Java JAR file
 
-FROM eclipse-temurin:8u472-b08-jre-ubi9-minimal
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
