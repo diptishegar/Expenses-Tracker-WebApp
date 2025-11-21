@@ -14,19 +14,22 @@ pipeline
         {
             steps
             {
-                script {
-                    sh "docker build -t expensetrackerwebapp:v2 ."
+                
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                        sh 'docker build -t diptishegar/expensestracker:v2 .'
+                        sh "docker push diptishegar/expensestracker:v2"
                 }
 
+            
             }
-            }
-        
-        post {
+        } 
+    }
+     post {
             success {
-               script{ echo 'Image Built Successfully' }
+                echo 'Image Built Successfully'
             } failure {
-               script{ echo 'Image Build Failed' }
+                echo 'Image Build Failed'
             }
         }
-    }
 }
