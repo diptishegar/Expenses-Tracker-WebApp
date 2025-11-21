@@ -20,14 +20,6 @@ pipeline
                 }
             }
         } 
-        stage ('Push Image to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('', DOCKER_HUB_CREDENTIALS) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+        
     }
 }
