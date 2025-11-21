@@ -10,20 +10,7 @@ pipeline
                 git(url: 'https://github.com/diptishegar/Expenses-Tracker-WebApp.git', branch: 'main')
             }
         }
-        stage ('Build Image')
-        {
-            steps
-            {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                        sh 'docker build -t diptishegar/expensestracker:v2 .'
-                        sh "docker push diptishegar/expensestracker:v2"
-                }
-
-            }
-            }
-        } post {
+        post {
             success {
                 echo 'Image Built Successfully'
             } failure {
