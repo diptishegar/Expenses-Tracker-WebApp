@@ -1,0 +1,7 @@
+Jenkins/
+manifests/
+.gitignore
+cleanup.sh
+LICENSE
+README.md
+.env

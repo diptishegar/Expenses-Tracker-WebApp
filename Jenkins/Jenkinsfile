@@ -1,28 +1,33 @@
 pipeline 
 {
     agent any
-
     stages
     {
-        stage('Build')
+        stage('checkout the code')
         {
             steps
             {
-                echo 'Building...'
+                git(url: 'https://github.com/diptishegar/Expenses-Tracker-WebApp.git', branch: 'main')
             }
         }
-        stage('Test')
+        stage('Build Image')
         {
             steps
             {
-                echo 'Testing...'
+                echo 'Building Image...'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                        sh 'docker build -t diptishegar/expensestracker:v2 .'
+                        sh "docker push diptishegar/expensestracker:v2"
+                }
+
             }
-        }
-        stage('Deploy')
-        {
-            steps
-            {
-                echo 'Deploying...'
+        } post{
+            success {
+                echo 'Image Built Successfully'
+            } failure {
+                echo 'Image Build Failed'
             }
         }
     }
