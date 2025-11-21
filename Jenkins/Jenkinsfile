@@ -25,11 +25,4 @@ pipeline
             }
         } 
     }
-     post {
-            success {
-                echo 'Image Built Successfully'
-            } failure {
-                echo 'Image Build Failed'
-            }
-        }
 }
