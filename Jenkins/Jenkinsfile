@@ -10,11 +10,22 @@ pipeline
                 git(url: 'https://github.com/diptishegar/Expenses-Tracker-WebApp.git', branch: 'main')
             }
         }
+        stage ('Build Image')
+        {
+            steps
+            {
+                script {
+                    sh "docker build -t expensetrackerwebapp:v2 ."
+                }
+
+            }
+            }
+        } 
         post {
             success {
-                echo 'Image Built Successfully'
+               script{ echo 'Image Built Successfully' }
             } failure {
-                echo 'Image Build Failed'
+               script{ echo 'Image Build Failed' }
             }
         }
     }
