@@ -16,7 +16,7 @@ pipeline
             {
                 
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                        sh "docker login -u ${DOCKER_USERNAME} -p --password-stdin"
                         sh 'docker build -t diptishegar/expensestracker:v2 .'
                         sh "docker push diptishegar/expensestracker:v2"
                 }
