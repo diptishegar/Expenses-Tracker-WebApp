@@ -1,12 +1,13 @@
 pipeline 
 {
     agent any
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
+    }
     stages
     {
-        stage ('checkout the code')
-        {
-            steps
-            {
+        stage ('checkout the code') {
+            steps {
                 git(url: 'https://github.com/diptishegar/Expenses-Tracker-WebApp.git', branch: 'main')
             }
         }
@@ -14,15 +15,19 @@ pipeline
         {
             steps
             {
-                
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u ${DOCKER_USERNAME} -p --password-stdin"
-                        sh 'docker build -t diptishegar/expensestracker:v2 .'
-                        sh "docker push diptishegar/expensestracker:v2"
+                script {
+                    dockerImage = docker.build("diptishegar/expenses-tracker-webapp:${env.BUILD_ID}")
                 }
-
-            
             }
         } 
+        stage ('Push Image to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_HUB_CREDENTIALS) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
     }
 }
