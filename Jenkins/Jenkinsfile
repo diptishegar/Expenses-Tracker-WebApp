@@ -3,14 +3,14 @@ pipeline
     agent any
     stages
     {
-        stage('checkout the code')
+        stage ('checkout the code')
         {
             steps
             {
                 git(url: 'https://github.com/diptishegar/Expenses-Tracker-WebApp.git', branch: 'main')
             }
         }
-        stage('Build Image')
+        stage ('Build Image')
         {
             steps
             {
@@ -23,7 +23,8 @@ pipeline
                 }
 
             }
-        } post{
+            }
+        } post {
             success {
                 echo 'Image Built Successfully'
             } failure {
@@ -31,5 +32,4 @@ pipeline
             }
         }
     }
-}
 }
